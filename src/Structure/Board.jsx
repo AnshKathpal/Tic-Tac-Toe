@@ -7,54 +7,86 @@ import { Turn } from "./Turn";
 export const Board = () => {
   const [eachBox, setEachBox] = useState(Array(9).fill(null));
 
+  const [isXTurn, setIsXTurn] = useState(true);
 
-  const [isXTurn, setIsXTurn] = useState(true)
+  const winner = () => {
+    const winnerLogic = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (let logic of winnerLogic) {
+      const [a, b, c] = logic;
+      if (eachBox[a] != null && (eachBox[a] === eachBox[b]) && (eachBox[b] === eachBox[c])) {
+        return eachBox[a];
+      }
+    }
+
+    return false;
+  };
+
+  const isWinner = winner();
 
   const handleClick = (index) => {
 
-    const copyState = [...eachBox]
-    copyState[index] = isXTurn ? "X" : "0"
-    setEachBox(copyState)
-    setIsXTurn(!isXTurn)
+    if(eachBox[index] != null){
+      return;
+    }
 
+    const copyState = [...eachBox];
+    copyState[index] = isXTurn ? "X" : "0";
+    setEachBox(copyState);
+    setIsXTurn(!isXTurn);
   };
 
   return (
     <Flex height="100vh" justify="center" align="center">
-      <Grid
-        border="1px solid black"
-        gridTemplateColumns="repeat(3,1fr)"
-        width="600px"
-        height="600px"
-      >
-        <InnerBox onClick={() => handleClick(0)}>
-          <Turn value={eachBox[0]} />
-        </InnerBox>
-        <InnerBox onClick={() => handleClick(1)}>
-          <Turn value={eachBox[1]} />
-        </InnerBox>
-        <InnerBox onClick={() => handleClick(2)}>
-          <Turn value={eachBox[2]} />
-        </InnerBox>
-        <InnerBox onClick={() => handleClick(3)}>
-          <Turn value={eachBox[3]} />
-        </InnerBox>
-        <InnerBox onClick={() => handleClick(4)}>
-          <Turn value={eachBox[4]} />
-        </InnerBox>
-        <InnerBox onClick={() => handleClick(5)}>
-          <Turn value={eachBox[5]} />
-        </InnerBox>
-        <InnerBox onClick={() => handleClick(6)}>
-          <Turn value={eachBox[6]} />
-        </InnerBox>
-        <InnerBox onClick={() => handleClick(7)}>
-          <Turn value={eachBox[7]} />
-        </InnerBox>
-        <InnerBox onClick={() => handleClick(8)}>
-          <Turn value={eachBox[8]} />
-        </InnerBox>
-      </Grid>
+      {isWinner ? (
+        <> {isWinner} won the Game</>
+      ) : (
+        <>
+          <Grid
+            border="1px solid black"
+            gridTemplateColumns="repeat(3,1fr)"
+            width="600px"
+            height="600px"
+          >
+            <InnerBox onClick={() => handleClick(0)}>
+              <Turn value={eachBox[0]} />
+            </InnerBox>
+            <InnerBox onClick={() => handleClick(1)}>
+              <Turn value={eachBox[1]} />
+            </InnerBox>
+            <InnerBox onClick={() => handleClick(2)}>
+              <Turn value={eachBox[2]} />
+            </InnerBox>
+            <InnerBox onClick={() => handleClick(3)}>
+              <Turn value={eachBox[3]} />
+            </InnerBox>
+            <InnerBox onClick={() => handleClick(4)}>
+              <Turn value={eachBox[4]} />
+            </InnerBox>
+            <InnerBox onClick={() => handleClick(5)}>
+              <Turn value={eachBox[5]} />
+            </InnerBox>
+            <InnerBox onClick={() => handleClick(6)}>
+              <Turn value={eachBox[6]} />
+            </InnerBox>
+            <InnerBox onClick={() => handleClick(7)}>
+              <Turn value={eachBox[7]} />
+            </InnerBox>
+            <InnerBox onClick={() => handleClick(8)}>
+              <Turn value={eachBox[8]} />
+            </InnerBox>
+          </Grid>
+        </>
+      )}
     </Flex>
   );
 };
