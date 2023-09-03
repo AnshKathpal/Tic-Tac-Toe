@@ -23,7 +23,11 @@ export const Board = () => {
 
     for (let logic of winnerLogic) {
       const [a, b, c] = logic;
-      if (eachBox[a] != null && (eachBox[a] === eachBox[b]) && (eachBox[b] === eachBox[c])) {
+      if (
+        eachBox[a] != null &&
+        eachBox[a] === eachBox[b] &&
+        eachBox[b] === eachBox[c]
+      ) {
         return eachBox[a];
       }
     }
@@ -34,8 +38,7 @@ export const Board = () => {
   const isWinner = winner();
 
   const handleClick = (index) => {
-
-    if(eachBox[index] != null){
+    if (eachBox[index] != null) {
       return;
     }
 
@@ -92,9 +95,5 @@ export const Board = () => {
 };
 
 const InnerBox = styled.div`
-  border: 1px solid red;
-
-  &:hover {
-    /* background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVf6Kja3k9ktWRCQcD29LPWz-ErnArr8p4Sw&usqp=CAU"); */
-  }
+  border: 1px solid black;
 `;
