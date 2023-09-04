@@ -32,6 +32,10 @@ export const Board = () => {
       }
     }
 
+    if (eachBox.every((square) => square !== null)) {
+      return "draw";
+    }
+
     return false;
   };
 
@@ -51,7 +55,11 @@ export const Board = () => {
   return (
     <Flex height="100vh" justify="center" align="center">
       {isWinner ? (
-        <> {isWinner} won the Game</>
+        isWinner === "draw" ? (
+          <>It's a draw</>
+        ) : (
+          <> {isWinner} won the Game</>
+        )
       ) : (
         <>
           <Grid
@@ -96,4 +104,7 @@ export const Board = () => {
 
 const InnerBox = styled.div`
   border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
