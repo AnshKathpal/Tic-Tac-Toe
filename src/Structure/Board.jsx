@@ -53,7 +53,7 @@ export const Board = () => {
   };
 
   return (
-    <Flex height="100vh" justify="center" align="center">
+    <Flex height="100vh" justify="center" align="center" bg = "rgb(29, 45, 80)" >
       {isWinner ? (
         isWinner === "draw" ? (
           <>It's a draw</>
@@ -63,10 +63,11 @@ export const Board = () => {
       ) : (
         <>
           <Grid
-            border="1px solid black"
             gridTemplateColumns="repeat(3,1fr)"
             width="600px"
             height="600px"
+            shadow=" rgba(0, 0, 0, 0.1) 0px 4px 12px;"
+            gap = "10px"
           >
             <InnerBox onClick={() => handleClick(0)}>
               <Turn value={eachBox[0]} />
