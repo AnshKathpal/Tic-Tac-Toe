@@ -18,7 +18,8 @@ export const Home = () => {
     setSelected1(false);
   };
 
-  let initialColor = "#041C32";
+  // let initialColor = "#041C32";
+  let initialColor = "white";
 
   return (
     <>
@@ -58,17 +59,11 @@ export const Home = () => {
           </Text>
 
           <Box width="60%">
-            <Button
-              _hover={{ backgroundColor: "none" }}
-              p="8"
-              width="50%"
-              bg={selected1 ? "#1E5F74" : initialColor}
-              onClick={handleClick1}
-            >
+            <Button _hover={{ backgroundColor: "none" }} width = "50%" onClick={handleClick1} p = "8" bg= {selected1 ? initialColor : "#041C32"} >
               <Text
                 fontFamily="'Permanent Marker', cursive"
                 fontSize={"30px"}
-                color="white"
+                color={selected1 ? "#041C32" : initialColor}
               >
                 X
               </Text>
@@ -77,13 +72,13 @@ export const Home = () => {
               _hover={{ backgroundColor: "none" }}
               p="8"
               width="50%"
-              bg={selected2 ? "#1E5F74" : initialColor}
+              bg= {selected2 ? "white" : "#041C32"}
               onClick={handleClick2}
             >
               <Text
                 fontFamily="'Permanent Marker', cursive"
                 fontSize={"30px"}
-                color="white"
+                color={selected2 ? "#041C32" : initialColor}
               >
                 0
               </Text>
@@ -95,12 +90,19 @@ export const Home = () => {
           </Text>
         </Flex>
 
-        <Link to="/game">
-          <Button bg="#FCDAB7" w="250px" p="7" fontSize={"24px"}>
-            New Game
-          </Button>
-        </Link>
+        {selected1 || selected2 ? (
+          <Link to="/game">
+            <AnimatedButton bg="#FCDAB7" w="250px" p="7" fontSize={"24px"}>
+              Start New Game
+            </AnimatedButton>
+          </Link>
+        ) : null}
       </Flex>
+
+      <Box>
+
+        
+      </Box>
     </>
   );
 };
@@ -138,3 +140,18 @@ const OImage = styled.img`
   width: 5%;
   animation: ${oslide} 2s ease-in-out;
 `;
+
+
+const slideButton = keyframes`
+
+
+
+`
+
+const AnimatedButton  = styled(Button)`
+  
+animation : ${slideButton} 2s ease-in-out;
+
+
+
+`

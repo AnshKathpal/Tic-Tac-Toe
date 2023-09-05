@@ -1,7 +1,8 @@
-import { Box, Grid, Flex } from "@chakra-ui/react";
+import { Box, Grid, Flex, Button, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
-import { Modal } from "./Modal";
+import { Result } from "./Result";
+import { Link } from "react-router-dom";
 
 import { Turn } from "./Turn";
 
@@ -9,6 +10,10 @@ export const Board = () => {
   const [eachBox, setEachBox] = useState(Array(9).fill(null));
 
   const [isXTurn, setIsXTurn] = useState(true);
+
+  const [playerTurn, setPlayerTurn] = useState("X");
+
+  console.log(playerTurn, "Turn");
 
   const winner = () => {
     const winnerLogic = [
@@ -51,18 +56,45 @@ export const Board = () => {
     copyState[index] = isXTurn ? "X" : "0";
     setEachBox(copyState);
     setIsXTurn(!isXTurn);
+
+    let turn = isXTurn ? "0" : "X";
+    setPlayerTurn(turn);
+  };
+
+  const handleRestart = () => {
+    setEachBox(Array(9).fill(null));
+    setIsXTurn(true);
+    setPlayerTurn("X");
   };
 
   return (
     <Flex height="100vh" justify="center" align="center" bg="#041C32">
       {isWinner ? (
         isWinner === "draw" ? (
-          <>It's a draw</>
+          <Result text={"It's a Draw"} />
         ) : (
-          <> {isWinner} won the Game</>
+          <Result text={`${isWinner} won the Game`} />
         )
       ) : (
-        <>
+        <Flex justify={"center"} align="center" direction={"column"} gap="45px">
+          <Flex width="100%" h="70px" justify={"space-between"}>
+            <Flex
+              width="170px"
+              shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
+              bg="#133b5c"
+              color="white"
+              borderRadius={"15px"}
+              justify="center"
+              align={"center"}
+              fontSize="40px"
+            >
+              <Text>{playerTurn}'s Turn</Text>
+            </Flex>
+
+            <Button onClick={handleRestart} width="15%" h="100%"></Button>
+          </Flex>
+
           <Grid gridTemplateColumns="repeat(3,1fr)" gap="15px">
             <InnerBox onClick={() => handleClick(0)}>
               <Turn value={eachBox[0]} />
@@ -92,7 +124,49 @@ export const Board = () => {
               <Turn value={eachBox[8]} />
             </InnerBox>
           </Grid>
-        </>
+
+          <Flex width="100%" h="100px" justify={"space-between"}>
+            <Flex
+              width="170px"
+              shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
+              bg="#133b5c"
+              color="white"
+              borderRadius={"15px"}
+              justify="center"
+              align={"center"}
+              fontSize="40px"
+            >
+              <Text>X Won : </Text>
+            </Flex>
+            <Flex
+              width="170px"
+              shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
+              bg="#133b5c"
+              color="white"
+              borderRadius={"15px"}
+              justify="center"
+              align={"center"}
+              fontSize="40px"
+            >
+              <Text>Draws : </Text>
+            </Flex>
+            <Flex
+              width="170px"
+              shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
+              bg="#133b5c"
+              color="white"
+              borderRadius={"15px"}
+              justify="center"
+              align={"center"}
+              fontSize="40px"
+            >
+              <Text>0 Won : </Text>
+            </Flex>
+          </Flex>
+        </Flex>
       )}
     </Flex>
   );
@@ -100,8 +174,8 @@ export const Board = () => {
 
 const InnerBox = styled.div`
   display: flex;
-  width: 200px;
-  height: 200px;
+  width: 170px;
+  height: 170px;
   justify-content: center;
   align-items: center;
   background-color: #133b5c;
