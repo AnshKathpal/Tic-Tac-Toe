@@ -1,8 +1,7 @@
 import { Box, Grid, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
-
-
+import { Modal } from "./Modal";
 
 import { Turn } from "./Turn";
 
@@ -55,7 +54,7 @@ export const Board = () => {
   };
 
   return (
-    <Flex height="100vh" justify="center" align="center" bg = "#041C32" >
+    <Flex height="100vh" justify="center" align="center" bg="#041C32">
       {isWinner ? (
         isWinner === "draw" ? (
           <>It's a draw</>
@@ -64,10 +63,7 @@ export const Board = () => {
         )
       ) : (
         <>
-          <Grid
-            gridTemplateColumns="repeat(3,1fr)"
-            gap = "10px"
-          >
+          <Grid gridTemplateColumns="repeat(3,1fr)" gap="15px">
             <InnerBox onClick={() => handleClick(0)}>
               <Turn value={eachBox[0]} />
             </InnerBox>
@@ -104,14 +100,15 @@ export const Board = () => {
 
 const InnerBox = styled.div`
   display: flex;
-  width : 200px;
-  height : 200px;
+  width: 200px;
+  height: 200px;
   justify-content: center;
   align-items: center;
-  background-color : #133B5C;
-  border-radius : 15px;
-font-family: 'Permanent Marker', cursive;
-font-size : 48px;
-color : white;
-box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+  background-color: #133b5c;
+  border-radius: 15px;
+  font-family: "Permanent Marker", cursive;
+  font-size: 55px;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 `;
