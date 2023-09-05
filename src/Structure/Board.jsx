@@ -1,15 +1,27 @@
-import { Box, Grid, Flex, Button, Text } from "@chakra-ui/react";
+import { Box, Grid, Flex, Button, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Result } from "./Result";
 import { Link } from "react-router-dom";
 
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react'
 
 import { FiRotateCw } from "react-icons/fi";
 
 import { Turn } from "./Turn";
 
 export const Board = () => {
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const [eachBox, setEachBox] = useState(Array(9).fill(null));
 
   const [isXTurn, setIsXTurn] = useState(true);
@@ -56,14 +68,14 @@ export const Board = () => {
 
   console.log(countXWinner, "X");
   console.log(count0Winner, "0");
-  console.log(countDraw,"Draw");
+  console.log(countDraw, "Draw");
 
   useEffect(() => {
     if (isWinner === "X") {
       setCountXWinner((prevCount) => prevCount + 1);
     } else if (isWinner === "0") {
       setCount0Winner((prevCount) => prevCount + 1);
-    } else if(isWinner === "draw") {
+    } else if (isWinner === "draw") {
       setCountDraw((prevCount) => prevCount + 1);
     }
   }, [isWinner]);
@@ -82,138 +94,191 @@ export const Board = () => {
     setPlayerTurn(turn);
   };
 
-
   const handleRestart = () => {
-    setEachBox(Array(9).fill(null));
-    setIsXTurn(true);
-    setPlayerTurn("X");
-    setCountXWinner(0)
-    setCountDraw(0)
-    setCount0Winner(0)
+
+    onOpen()
+
+    
   };
 
 
-  const handleRound = () => {
+  const handleReset = () => {
 
+    onClose()
     setEachBox(Array(9).fill(null));
-    setPlayerTurn("X");
     setIsXTurn(true);
+    setPlayerTurn("X");
+    setCountXWinner(0);
+    setCountDraw(0);
+    setCount0Winner(0);
 
   }
 
+
+  const handleRound = () => {
+    setEachBox(Array(9).fill(null));
+    setPlayerTurn("X");
+    setIsXTurn(true);
+  };
+
   return (
     <Flex height="100vh" justify="center" align="center" bg="#041C32">
-      {isWinner && (
-        isWinner === "draw" ? (
+      {isWinner &&
+        (isWinner === "draw" ? (
           <Result onClick={handleRound} text={"It's a Draw"} />
         ) : (
           <Result onClick={handleRound} text={`${isWinner} won the Game`} />
-        )
-      )
-      }
+        ))}
 
-<Flex justify={"center"} align="center" direction={"column"} gap="45px">
-          <Flex width="100%" h="70px" justify={"space-between"}>
-            <Flex
-              width="170px"
-              shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
+      <Flex justify={"center"} align="center" direction={"column"} gap="45px">
+        <Flex width="100%" h="70px" justify={"space-between"}>
+          <Flex
+            width="170px"
+            shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
-              bg="#133b5c"
-              color="white"
-              borderRadius={"15px"}
-              justify="center"
-              align={"center"}
-              fontSize="40px"
-            >
-              <Text color="#FCDAB7">{playerTurn}'s Turn</Text>
-            </Flex>
+            bg="#133b5c"
+            color="white"
+            borderRadius={"15px"}
+            justify="center"
+            align={"center"}
+            fontSize="40px"
+          >
+            <Text color="#FCDAB7">{playerTurn}'s Turn</Text>
+          </Flex>
 
+          <Button
+            color={"#FCDAB7"}
+            bg="#133b5c"
+            fontSize={"40px"}
+            onClick={handleRestart}
+            width="15%"
+            h="100%"
+
+
+          >
+            <FiRotateCw />
+          </Button>
+
+          <Modal onClose={onClose} isOpen={isOpen} isCentered>
+        <ModalOverlay />
+        <ModalContent  borderRadius={"20px"}
+          maxWidth="85%"
+          h="250px"
+          bg="#1E5F74">
+          <ModalBody display={"flex"}
+            justifyContent="center"
+            alignItems="center">
+
+<Text
+              color="#FCDAB7"
+              fontSize="48px"
+              fontFamily="'Permanent Marker', cursive"
+            >
+              Do you really want to Restart?
+            </Text>
+
+
+          </ModalBody>
+          <ModalFooter
+            display={"flex"}
+            justifyContent="center"
+            alignItems={"center"}
+            gap="100px"
+          >
+              <Button
+                _hover={{ backgroundColor: "#9bc8ca" }}
+                bg="#A5C9CA"
+                fontSize={"35px"}
+                onClick={onClose}
+              >
+                No, Resume.
+              </Button>
             <Button
-              color={"#FCDAB7"}
-              bg="#133b5c"
-              fontSize={"40px"}
-              onClick={handleRestart}
-              width="15%"
-              h="100%"
+              _hover={{ backgroundColor: "#c08b36" }}
+              bg="#C69749"
+              fontSize={"35px"}
+              onClick={handleReset}
             >
-              <FiRotateCw />
+              Yes, Restart
             </Button>
-          </Flex>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
-          <Grid gridTemplateColumns="repeat(3,1fr)" gap="15px">
-            <InnerBox onClick={() => handleClick(0)}>
-              <Turn value={eachBox[0]} />
-            </InnerBox>
-            <InnerBox onClick={() => handleClick(1)}>
-              <Turn value={eachBox[1]} />
-            </InnerBox>
-            <InnerBox onClick={() => handleClick(2)}>
-              <Turn value={eachBox[2]} />
-            </InnerBox>
-            <InnerBox onClick={() => handleClick(3)}>
-              <Turn value={eachBox[3]} />
-            </InnerBox>
-            <InnerBox onClick={() => handleClick(4)}>
-              <Turn value={eachBox[4]} />
-            </InnerBox>
-            <InnerBox onClick={() => handleClick(5)}>
-              <Turn value={eachBox[5]} />
-            </InnerBox>
-            <InnerBox onClick={() => handleClick(6)}>
-              <Turn value={eachBox[6]} />
-            </InnerBox>
-            <InnerBox onClick={() => handleClick(7)}>
-              <Turn value={eachBox[7]} />
-            </InnerBox>
-            <InnerBox onClick={() => handleClick(8)}>
-              <Turn value={eachBox[8]} />
-            </InnerBox>
-          </Grid>
-
-          <Flex width="100%" h="100px" justify={"space-between"}>
-            <Flex
-              width="170px"
-              shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
-    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
-              bg="#133b5c"
-              color="white"
-              borderRadius={"15px"}
-              justify="center"
-              align={"center"}
-              fontSize="40px"
-            >
-              <Text color={"#FCDAB7"}>X Won : {countXWinner}</Text>
-            </Flex>
-            <Flex
-              width="170px"
-              shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
-    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
-              bg="#133b5c"
-              color="white"
-              borderRadius={"15px"}
-              justify="center"
-              align={"center"}
-              fontSize="40px"
-            >
-              <Text color={"#FCDAB7"}>Draws : {countDraw} </Text>
-            </Flex>
-            <Flex
-              width="170px"
-              shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
-    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
-              bg="#133b5c"
-              color="white"
-              borderRadius={"15px"}
-              justify="center"
-              align={"center"}
-              fontSize="40px"
-            >
-              <Text color={"#FCDAB7"}>0 Won : {count0Winner} </Text>
-            </Flex>
-          </Flex>
         </Flex>
 
+        <Grid gridTemplateColumns="repeat(3,1fr)" gap="15px">
+          <InnerBox onClick={() => handleClick(0)}>
+            <Turn value={eachBox[0]} />
+          </InnerBox>
+          <InnerBox onClick={() => handleClick(1)}>
+            <Turn value={eachBox[1]} />
+          </InnerBox>
+          <InnerBox onClick={() => handleClick(2)}>
+            <Turn value={eachBox[2]} />
+          </InnerBox>
+          <InnerBox onClick={() => handleClick(3)}>
+            <Turn value={eachBox[3]} />
+          </InnerBox>
+          <InnerBox onClick={() => handleClick(4)}>
+            <Turn value={eachBox[4]} />
+          </InnerBox>
+          <InnerBox onClick={() => handleClick(5)}>
+            <Turn value={eachBox[5]} />
+          </InnerBox>
+          <InnerBox onClick={() => handleClick(6)}>
+            <Turn value={eachBox[6]} />
+          </InnerBox>
+          <InnerBox onClick={() => handleClick(7)}>
+            <Turn value={eachBox[7]} />
+          </InnerBox>
+          <InnerBox onClick={() => handleClick(8)}>
+            <Turn value={eachBox[8]} />
+          </InnerBox>
+        </Grid>
 
+        <Flex width="100%" h="100px" justify={"space-between"}>
+          <Flex
+            width="170px"
+            shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
+            bg="#133b5c"
+            color="white"
+            borderRadius={"15px"}
+            justify="center"
+            align={"center"}
+            fontSize="40px"
+          >
+            <Text color={"#FCDAB7"}>X Won : {countXWinner}</Text>
+          </Flex>
+          <Flex
+            width="170px"
+            shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
+            bg="#133b5c"
+            color="white"
+            borderRadius={"15px"}
+            justify="center"
+            align={"center"}
+            fontSize="40px"
+          >
+            <Text color={"#FCDAB7"}>Draws : {countDraw} </Text>
+          </Flex>
+          <Flex
+            width="170px"
+            shadow=" rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset"
+            bg="#133b5c"
+            color="white"
+            borderRadius={"15px"}
+            justify="center"
+            align={"center"}
+            fontSize="40px"
+          >
+            <Text color={"#FCDAB7"}>0 Won : {count0Winner} </Text>
+          </Flex>
+        </Flex>
+      </Flex>
     </Flex>
   );
 };
