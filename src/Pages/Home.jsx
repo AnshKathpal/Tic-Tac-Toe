@@ -5,7 +5,20 @@ import styled, { keyframes } from "styled-components";
 import { Link } from "react-router-dom";
 
 export const Home = () => {
-  const [selected, setSelected] = useState(false);
+  const [selected1, setSelected1] = useState(false);
+  const [selected2, setSelected2] = useState(false);
+
+  const handleClick1 = () => {
+    setSelected1(!selected1);
+    setSelected2(false);
+  };
+
+  const handleClick2 = () => {
+    setSelected2(!selected2);
+    setSelected1(false);
+  };
+
+  let initialColor = "#041C32";
 
   return (
     <>
@@ -14,7 +27,7 @@ export const Home = () => {
         justify={"center"}
         direction="column"
         align="center"
-        bg="#1D2D50"
+        bg="#041C32"
         h="100vh"
       >
         <Flex gap="10" justifyContent={"center"}>
@@ -29,7 +42,6 @@ export const Home = () => {
           />
         </Flex>
 
-
         <Flex
           borderRadius="20px"
           shadow="rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;"
@@ -39,32 +51,48 @@ export const Home = () => {
           h="250px"
           bg="#133B5C"
           direction={"column"}
-          gap = "5"
+          gap="5"
         >
- 
-<Text color = "#FCDAB7" fontSize={"xl"} fontWeight = "bold"  >
-  Select Player 1's Mark
-</Text>
+          <Text color="#FCDAB7" fontSize={"xl"} fontWeight="bold">
+            Select Your's Mark
+          </Text>
 
-<Box width = "60%">
+          <Box width="60%">
+            <Button
+              _hover={{ backgroundColor: "none" }}
+              p="8"
+              width="50%"
+              bg={selected1 ? "#1E5F74" : initialColor}
+              onClick={handleClick1}
+            >
+              <Text
+                fontFamily="'Permanent Marker', cursive"
+                fontSize={"30px"}
+                color="white"
+              >
+                X
+              </Text>
+            </Button>
+            <Button
+              _hover={{ backgroundColor: "none" }}
+              p="8"
+              width="50%"
+              bg={selected2 ? "#1E5F74" : initialColor}
+              onClick={handleClick2}
+            >
+              <Text
+                fontFamily="'Permanent Marker', cursive"
+                fontSize={"30px"}
+                color="white"
+              >
+                0
+              </Text>
+            </Button>
+          </Box>
 
-          <Button p="7" width="50%" bg="#041C32">
-            <Text fontSize={"30px"} color="white">
-              X
-            </Text>
-          </Button>
-          <Button p="7" width="50%" bg="#041C32">
-            <Text fontSize={"30px"} color="white">
-              0
-            </Text>
-          </Button>
-</Box>
-
-
-<Text color = "#FCDAB7" fontSize={"l"}   >
-  Remember : X will play first
-</Text>
-
+          <Text color="#FCDAB7" fontSize={"l"}>
+            Remember : X will play first
+          </Text>
         </Flex>
 
         <Link to="/game">

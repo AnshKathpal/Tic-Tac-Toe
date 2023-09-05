@@ -2,6 +2,8 @@ import { Box, Grid, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
+
+
 import { Turn } from "./Turn";
 
 export const Board = () => {
@@ -53,7 +55,7 @@ export const Board = () => {
   };
 
   return (
-    <Flex height="100vh" justify="center" align="center" bg = "rgb(29, 45, 80)" >
+    <Flex height="100vh" justify="center" align="center" bg = "#041C32" >
       {isWinner ? (
         isWinner === "draw" ? (
           <>It's a draw</>
@@ -64,9 +66,6 @@ export const Board = () => {
         <>
           <Grid
             gridTemplateColumns="repeat(3,1fr)"
-            width="600px"
-            height="600px"
-            shadow=" rgba(0, 0, 0, 0.1) 0px 4px 12px;"
             gap = "10px"
           >
             <InnerBox onClick={() => handleClick(0)}>
@@ -104,8 +103,15 @@ export const Board = () => {
 };
 
 const InnerBox = styled.div`
-  border: 1px solid black;
   display: flex;
+  width : 200px;
+  height : 200px;
   justify-content: center;
   align-items: center;
+  background-color : #133B5C;
+  border-radius : 15px;
+font-family: 'Permanent Marker', cursive;
+font-size : 48px;
+color : white;
+box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
 `;
