@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "../App.css";
 
 import {
@@ -27,7 +27,12 @@ export const Result = ({ text, onClick }) => {
     <Box>
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
-        <ModalContent borderRadius={"20px"} maxWidth="80%" h="250px" bg="#1E5F74">
+        <ModalContent
+          borderRadius={"20px"}
+          maxWidth="85%"
+          h="250px"
+          bg="#1E5F74"
+        >
           <ModalBody
             display={"flex"}
             justifyContent="center"
@@ -42,16 +47,29 @@ export const Result = ({ text, onClick }) => {
             </Text>
           </ModalBody>
           <ModalFooter
-            border="1px solid red"
             display={"flex"}
             justifyContent="center"
             alignItems={"center"}
-            gap = "100px"
+            gap="100px"
           >
-            <Link to="/">
-              <Button onClick={onClose}>Quit</Button>
-            </Link>
-            <Button onClick={onClick}>Next Round</Button>
+            <NavLink to="/">
+              <Button
+                _hover={{ backgroundColor: "#9bc8ca" }}
+                bg="#A5C9CA"
+                fontSize={"35px"}
+                onClick={onClose}
+              >
+                Quit
+              </Button>
+            </NavLink>
+            <Button
+              _hover={{ backgroundColor: "#c08b36" }}
+              bg="#C69749"
+              fontSize={"35px"}
+              onClick={onClick}
+            >
+              Next Round
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
