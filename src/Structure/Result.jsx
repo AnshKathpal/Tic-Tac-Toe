@@ -1,50 +1,60 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import "../App.css"
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import "../App.css";
 
 import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,
-    Button,
-    Text,
-    Box
-  } from '@chakra-ui/react'
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Button,
+  Text,
+  Box,
+} from "@chakra-ui/react";
 
-export const Result = ({text}) => {
+export const Result = ({ text, onClick }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
-
-
-    useEffect(() => {
-      onOpen()
-    },[onOpen])
+  useEffect(() => {
+    onOpen();
+  }, [onOpen]);
 
   return (
-<Box w = "100%" h = "100vh">
-
-
-      <Modal  onClose={onClose} isOpen={isOpen} isCentered>
-        {/* <ModalOverlay /> */}
-        <ModalContent maxWidth="70%" h = "200px" bg = "#1E5F74" >
-          <ModalBody display={"flex"} justifyContent = "center" alignItems="center" >
-           <Text color = "#FCDAB7" fontSize="48px" fontFamily="'Permanent Marker', cursive" >
-            {text}
-           </Text>
+    <Box>
+      <Modal onClose={onClose} isOpen={isOpen} isCentered>
+        <ModalOverlay />
+        <ModalContent borderRadius={"20px"} maxWidth="80%" h="250px" bg="#1E5F74">
+          <ModalBody
+            display={"flex"}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Text
+              color="#FCDAB7"
+              fontSize="48px"
+              fontFamily="'Permanent Marker', cursive"
+            >
+              {text}
+            </Text>
           </ModalBody>
-          {/* <ModalFooter>
-            <Link to = "/game">
-            <Button onClick={onClose}>Close</Button>
+          <ModalFooter
+            border="1px solid red"
+            display={"flex"}
+            justifyContent="center"
+            alignItems={"center"}
+            gap = "100px"
+          >
+            <Link to="/">
+              <Button onClick={onClose}>Quit</Button>
             </Link>
-          </ModalFooter> */}
+            <Button onClick={onClick}>Next Round</Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
-
-</Box>
-  )
-}
+    </Box>
+  );
+};
