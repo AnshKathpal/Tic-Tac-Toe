@@ -1,8 +1,11 @@
 import { Box, Grid, Flex, Button, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Result } from "./Result";
 import { Link } from "react-router-dom";
+
+
+import { FiRotateCw } from "react-icons/fi";
 
 import { Turn } from "./Turn";
 
@@ -14,6 +17,10 @@ export const Board = () => {
   const [playerTurn, setPlayerTurn] = useState("X");
 
   console.log(playerTurn, "Turn");
+
+  const [countXWinner, setCountXWinner] = useState(0);
+  const [count0Winner, setCount0Winner] = useState(0);
+  const [countDraw, setCountDraw] = useState(0);
 
   const winner = () => {
     const winnerLogic = [
@@ -47,6 +54,20 @@ export const Board = () => {
 
   const isWinner = winner();
 
+  console.log(countXWinner, "X");
+  console.log(count0Winner, "0");
+  console.log(countDraw,"Draw");
+
+  useEffect(() => {
+    if (isWinner === "X") {
+      setCountXWinner((prevCount) => prevCount + 1);
+    } else if (isWinner === "0") {
+      setCount0Winner((prevCount) => prevCount + 1);
+    } else if(isWinner === "draw") {
+      setCountDraw((prevCount) => prevCount + 1);
+    }
+  }, [isWinner]);
+
   const handleClick = (index) => {
     if (eachBox[index] != null) {
       return;
@@ -61,22 +82,37 @@ export const Board = () => {
     setPlayerTurn(turn);
   };
 
+
   const handleRestart = () => {
     setEachBox(Array(9).fill(null));
     setIsXTurn(true);
     setPlayerTurn("X");
+    setCountXWinner(0)
+    setCountDraw(0)
+    setCount0Winner(0)
   };
+
+
+  const handleRound = () => {
+
+    setEachBox(Array(9).fill(null));
+    setPlayerTurn("X");
+    setIsXTurn(true);
+
+  }
 
   return (
     <Flex height="100vh" justify="center" align="center" bg="#041C32">
-      {isWinner ? (
+      {isWinner && (
         isWinner === "draw" ? (
-          <Result text={"It's a Draw"} />
+          <Result onClick={handleRound} text={"It's a Draw"} />
         ) : (
-          <Result text={`${isWinner} won the Game`} />
+          <Result onClick={handleRound} text={`${isWinner} won the Game`} />
         )
-      ) : (
-        <Flex justify={"center"} align="center" direction={"column"} gap="45px">
+      )
+      }
+
+<Flex justify={"center"} align="center" direction={"column"} gap="45px">
           <Flex width="100%" h="70px" justify={"space-between"}>
             <Flex
               width="170px"
@@ -89,10 +125,19 @@ export const Board = () => {
               align={"center"}
               fontSize="40px"
             >
-              <Text>{playerTurn}'s Turn</Text>
+              <Text color="#FCDAB7">{playerTurn}'s Turn</Text>
             </Flex>
 
-            <Button onClick={handleRestart} width="15%" h="100%"></Button>
+            <Button
+              color={"#FCDAB7"}
+              bg="#133b5c"
+              fontSize={"40px"}
+              onClick={handleRestart}
+              width="15%"
+              h="100%"
+            >
+              <FiRotateCw />
+            </Button>
           </Flex>
 
           <Grid gridTemplateColumns="repeat(3,1fr)" gap="15px">
@@ -137,7 +182,7 @@ export const Board = () => {
               align={"center"}
               fontSize="40px"
             >
-              <Text>X Won : </Text>
+              <Text color={"#FCDAB7"}>X Won : {countXWinner}</Text>
             </Flex>
             <Flex
               width="170px"
@@ -150,7 +195,7 @@ export const Board = () => {
               align={"center"}
               fontSize="40px"
             >
-              <Text>Draws : </Text>
+              <Text color={"#FCDAB7"}>Draws : {countDraw} </Text>
             </Flex>
             <Flex
               width="170px"
@@ -163,11 +208,12 @@ export const Board = () => {
               align={"center"}
               fontSize="40px"
             >
-              <Text>0 Won : </Text>
+              <Text color={"#FCDAB7"}>0 Won : {count0Winner} </Text>
             </Flex>
           </Flex>
         </Flex>
-      )}
+
+
     </Flex>
   );
 };
