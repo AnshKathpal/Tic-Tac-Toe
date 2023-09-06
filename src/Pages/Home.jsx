@@ -18,7 +18,6 @@ export const Home = () => {
     setSelected1(false);
   };
 
-  // let initialColor = "#041C32";
   let initialColor = "white";
 
   return (
