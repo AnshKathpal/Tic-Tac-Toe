@@ -12,15 +12,14 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 
 import { FiRotateCw } from "react-icons/fi";
 
 import { Turn } from "./Turn";
 
 export const Board = () => {
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [eachBox, setEachBox] = useState(Array(9).fill(null));
 
@@ -95,25 +94,18 @@ export const Board = () => {
   };
 
   const handleRestart = () => {
-
-    onOpen()
-
-    
+    onOpen();
   };
 
-
   const handleReset = () => {
-
-    onClose()
+    onClose();
     setEachBox(Array(9).fill(null));
     setIsXTurn(true);
     setPlayerTurn("X");
     setCountXWinner(0);
     setCountDraw(0);
     setCount0Winner(0);
-
-  }
-
+  };
 
   const handleRound = () => {
     setEachBox(Array(9).fill(null));
@@ -153,58 +145,56 @@ export const Board = () => {
             onClick={handleRestart}
             width="15%"
             h="100%"
-
-
           >
             <FiRotateCw />
           </Button>
 
           <Modal onClose={onClose} isOpen={isOpen} isCentered>
-        <ModalOverlay />
-        <ModalContent  borderRadius={"20px"}
-          maxWidth="85%"
-          h="250px"
-          bg="#1E5F74">
-          <ModalBody display={"flex"}
-            justifyContent="center"
-            alignItems="center">
-
-<Text
-              color="#FCDAB7"
-              fontSize="48px"
-              fontFamily="'Permanent Marker', cursive"
+            <ModalOverlay />
+            <ModalContent
+              borderRadius={"20px"}
+              maxWidth="85%"
+              h="250px"
+              bg="#1E5F74"
             >
-              Do you really want to Restart?
-            </Text>
-
-
-          </ModalBody>
-          <ModalFooter
-            display={"flex"}
-            justifyContent="center"
-            alignItems={"center"}
-            gap="100px"
-          >
-              <Button
-                _hover={{ backgroundColor: "#9bc8ca" }}
-                bg="#A5C9CA"
-                fontSize={"35px"}
-                onClick={onClose}
+              <ModalBody
+                display={"flex"}
+                justifyContent="center"
+                alignItems="center"
               >
-                No, Resume.
-              </Button>
-            <Button
-              _hover={{ backgroundColor: "#c08b36" }}
-              bg="#C69749"
-              fontSize={"35px"}
-              onClick={handleReset}
-            >
-              Yes, Restart
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-
+                <Text
+                  color="#FCDAB7"
+                  fontSize="48px"
+                  fontFamily="'Permanent Marker', cursive"
+                >
+                  Do you really want to Restart?
+                </Text>
+              </ModalBody>
+              <ModalFooter
+                display={"flex"}
+                justifyContent="center"
+                alignItems={"center"}
+                gap="100px"
+              >
+                <Button
+                  _hover={{ backgroundColor: "#9bc8ca" }}
+                  bg="#A5C9CA"
+                  fontSize={"35px"}
+                  onClick={onClose}
+                >
+                  No, Resume.
+                </Button>
+                <Button
+                  _hover={{ backgroundColor: "#c08b36" }}
+                  bg="#C69749"
+                  fontSize={"35px"}
+                  onClick={handleReset}
+                >
+                  Yes, Restart
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </Flex>
 
         <Grid gridTemplateColumns="repeat(3,1fr)" gap="15px">
@@ -249,7 +239,11 @@ export const Board = () => {
             align={"center"}
             fontSize="40px"
           >
-            <Text color={"#FCDAB7"}>X Won : {countXWinner}</Text>
+            <Text color={"#FCDAB7"}>
+              {" "}
+              <div style={{ fontSize: "28px" }}>X Won</div>
+              {countXWinner}
+            </Text>
           </Flex>
           <Flex
             width="170px"
@@ -262,7 +256,9 @@ export const Board = () => {
             align={"center"}
             fontSize="40px"
           >
-            <Text color={"#FCDAB7"}>Draws : {countDraw} </Text>
+            <Text color={"#FCDAB7"}>
+              <div style={{ fontSize: "28px" }}>Draws</div> {countDraw}{" "}
+            </Text>
           </Flex>
           <Flex
             width="170px"
@@ -275,7 +271,9 @@ export const Board = () => {
             align={"center"}
             fontSize="40px"
           >
-            <Text color={"#FCDAB7"}>0 Won : {count0Winner} </Text>
+            <Text color={"#FCDAB7"}>
+              <div style={{ fontSize: "28px" }}>0 Won</div> {count0Winner}{" "}
+            </Text>
           </Flex>
         </Flex>
       </Flex>
