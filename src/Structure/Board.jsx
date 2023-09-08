@@ -139,6 +139,7 @@ export const Board = () => {
           </Flex>
 
           <Button
+          border = "1px solid red"
             color={"#FCDAB7"}
             bg="#133b5c"
             fontSize={"40px"}

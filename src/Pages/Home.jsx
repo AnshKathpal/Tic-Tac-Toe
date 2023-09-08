@@ -100,7 +100,6 @@ export const Home = () => {
 
       <Box>
 
-        
       </Box>
     </>
   );
@@ -142,8 +141,6 @@ const OImage = styled.img`
 
 
 const slideButton = keyframes`
-
-
 
 `
 
