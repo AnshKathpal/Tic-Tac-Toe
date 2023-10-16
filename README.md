@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# Tic-Tac-Toe App
+(Still Under Development)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+Tic-Tac-Toe is a classic two-player game where players take turns marking the cells of a 3x3 grid with 'X' and 'O' symbols. The goal is to be the first to form a horizontal, vertical, or diagonal line of three of your marks. This readme provides an overview of a Tic-Tac-Toe web application built using the following tech stack: React, Redux, and Chakra UI.
 
-## Available Scripts
+## Features
+- **Two-Player Mode**: Play against a friend on the same device, taking turns to make your moves.
 
-In the project directory, you can run:
+- **Interactive Grid**: Click on the cells to place your 'X' or 'O' symbol.
 
-### `npm start`
+- **Win Detection**: The game automatically detects when a player wins and highlights the winning line.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Draw Detection**: If no player wins, the game detects a draw and prompts for a new game.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Score Keeping**: Track and display the number of games won by each player.
 
-### `npm test`
+## Tech Stack
+### Frontend
+- **React**: The user interface of the Tic-Tac-Toe app is built using React, a JavaScript library for creating user interfaces.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Redux**: Redux is used for state management, ensuring that the application maintains the game state and allows for easy interaction between components.
 
-### `npm run build`
+- **Chakra UI**: Chakra UI provides a set of accessible and customizable components for creating a visually appealing and responsive design.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation and Setup
+1. Clone the repository from GitHub.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Navigate to the project directory and run `npm install` to install the required dependencies.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Start the development server using `npm start`.
 
-### `npm run eject`
+4. Access the Tic-Tac-Toe app through your web browser at the specified URL (usually `http://localhost:3000`).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Usage
+1. Open the Tic-Tac-Toe app in your browser.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. Choose a player to start (usually 'X').
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. Click on an empty cell to place your symbol.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+4. Take turns with your opponent to play the game.
 
-## Learn More
+5. The game automatically detects a win, draw, or loss and displays the result.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+6. Start a new game by clicking the "New Game" button.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Contributing
+Contributions to the Tic-Tac-Toe app are welcome. Please follow the guidelines outlined in the CONTRIBUTING.md file.
 
-### Code Splitting
+## License
+This project is licensed under the [MIT License](LICENSE).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Author
+- [Your Name]
 
-### Analyzing the Bundle Size
+## Acknowledgments
+Special thanks to the React, Redux, and Chakra UI communities for providing the tools and resources to build this project.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Feel free to customize this README to match your specific project and requirements. Additionally, consider adding more details, such as rules and game options, if your Tic-Tac-Toe app offers additional features.
