@@ -1,24 +1,21 @@
 import { useState } from "react";
 import { Box, Text, Flex, Button } from "@chakra-ui/react";
 import styled, { keyframes } from "styled-components";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+// const socket = io.connect("http://localhost:8080");
 
-const socket = io.connect("http://localhost:8080");
-
-export const Home = ({ room, setRoom }) => {
+export const Home = ({ room, setRoom, socket }) => {
   const [selected1, setSelected1] = useState(false);
   const [selected2, setSelected2] = useState(false);
 
-
   // const [room,setRoom] = useState("");
-
 
   console.log(room);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleClick1 = () => {
     setSelected1(!selected1);
@@ -32,12 +29,12 @@ export const Home = ({ room, setRoom }) => {
 
   let initialColor = "white";
 
-
   const joinRoom = () => {
-    if(room!==""){
-      socket.emit("join_room",room)
+    if (room !== "") {
+      socket.emit("join_room", room);
+      navigate("/game");
     }
-  }
+  };
 
   return (
     <>
@@ -58,10 +55,15 @@ export const Home = ({ room, setRoom }) => {
           top="20%"
           gap="20px"
         >
-          <input type="text" name="" id="" onChange={(e)=>{
-            setRoom(e.target.value)
-          }} />
-          <Button onClick = {joinRoom} >Join Room</Button>
+          <input
+            type="text"
+            name=""
+            id=""
+            onChange={(e) => {
+              setRoom(e.target.value);
+            }}
+          />
+          <Button onClick={joinRoom}>Join Room</Button>
         </Box>
 
         <Flex gap="10" justifyContent={"center"}>
