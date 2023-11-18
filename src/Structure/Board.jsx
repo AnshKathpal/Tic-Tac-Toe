@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Result } from "./Result";
 import { Link } from "react-router-dom";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import {
   Modal,
   ModalOverlay,
@@ -18,9 +18,9 @@ import { FiRotateCw } from "react-icons/fi";
 
 import { Turn } from "./Turn";
 
-const socket = io.connect("http://localhost:8080");
+// const socket = io.connect("http://localhost:8080");
 
-export const Board = ({ room }) => {
+export const Board = ({ room, socket }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [eachBox, setEachBox] = useState(Array(9).fill(null));
@@ -35,11 +35,8 @@ export const Board = ({ room }) => {
   const [count0Winner, setCount0Winner] = useState(0);
   const [countDraw, setCountDraw] = useState(0);
 
-
-
-  const [message,setMessage] = useState("");
-  const [messageReceived,setMessageReceived] = useState("")
-
+  const [message, setMessage] = useState("");
+  const [messageReceived, setMessageReceived] = useState("");
 
   const winner = () => {
     const winnerLogic = [
@@ -114,32 +111,27 @@ export const Board = ({ room }) => {
     setCountDraw(0);
     setCount0Winner(0);
   };
-  
+
   const handleRound = () => {
     setEachBox(Array(9).fill(null));
     setPlayerTurn("X");
     setIsXTurn(true);
   };
-  
-  const sendMessage = () => {
-    socket.emit("send_message", { message,room });
-  };
-  
 
-  
-  
-  useEffect(()=>{
-    socket.on("receive_message",(data)=>{
-      setMessageReceived(data.message)
-    })
-    
+  const sendMessage = () => {
+    socket.emit("send_message", { message, room });
+  };
+
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      setMessageReceived(data.message);
+    });
+
     return () => {
       socket.off("receive_message");
     };
-  },[])
-  
-  
-  
+  }, []);
+
   console.log(room);
 
   return (
@@ -160,13 +152,17 @@ export const Board = ({ room }) => {
           gap: "10px",
         }}
       >
-        <input type="text" name="" id="" onChange={(e)=>{
-          setMessage(e.target.value)
-        }} />
+        <input
+          type="text"
+          name=""
+          id=""
+          onChange={(e) => {
+            setMessage(e.target.value);
+          }}
+        />
         <Button onClick={sendMessage}>Send Message</Button>
 
-
-        <Text color = "white" mt = "20px" >
+        <Text color="white" mt="20px">
           {messageReceived}
         </Text>
       </Box>
