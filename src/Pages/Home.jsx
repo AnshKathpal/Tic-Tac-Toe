@@ -1,12 +1,24 @@
 import { useState } from "react";
 import { Box, Text, Flex, Button } from "@chakra-ui/react";
 import styled, { keyframes } from "styled-components";
-
+import io from "socket.io-client";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export const Home = () => {
+
+const socket = io.connect("http://localhost:8080");
+
+export const Home = ({ room, setRoom }) => {
   const [selected1, setSelected1] = useState(false);
   const [selected2, setSelected2] = useState(false);
+
+
+  // const [room,setRoom] = useState("");
+
+
+  console.log(room);
+
+  const navigate = useNavigate()
 
   const handleClick1 = () => {
     setSelected1(!selected1);
@@ -20,6 +32,13 @@ export const Home = () => {
 
   let initialColor = "white";
 
+
+  const joinRoom = () => {
+    if(room!==""){
+      socket.emit("join_room",room)
+    }
+  }
+
   return (
     <>
       <Flex
@@ -29,7 +48,22 @@ export const Home = () => {
         align="center"
         bg="#041C32"
         h="100vh"
+        position={"relative"}
       >
+        <Box
+          pos={"absolute"}
+          display="flex"
+          flexDirection={"column"}
+          left="10%"
+          top="20%"
+          gap="20px"
+        >
+          <input type="text" name="" id="" onChange={(e)=>{
+            setRoom(e.target.value)
+          }} />
+          <Button onClick = {joinRoom} >Join Room</Button>
+        </Box>
+
         <Flex gap="10" justifyContent={"center"}>
           <XImage
             src="https://s3.topgolf.com/uploads/icons/x.svg?resize.width=400&resize.height=400&resize.method=cover"
@@ -58,7 +92,13 @@ export const Home = () => {
           </Text>
 
           <Box width="60%">
-            <Button _hover={{ backgroundColor: "none" }} width = "50%" onClick={handleClick1} p = "8" bg= {selected1 ? initialColor : "#041C32"} >
+            <Button
+              _hover={{ backgroundColor: "none" }}
+              width="50%"
+              onClick={handleClick1}
+              p="8"
+              bg={selected1 ? initialColor : "#041C32"}
+            >
               <Text
                 fontFamily="'Permanent Marker', cursive"
                 fontSize={"30px"}
@@ -71,7 +111,7 @@ export const Home = () => {
               _hover={{ backgroundColor: "none" }}
               p="8"
               width="50%"
-              bg= {selected2 ? "white" : "#041C32"}
+              bg={selected2 ? "white" : "#041C32"}
               onClick={handleClick2}
             >
               <Text
@@ -98,9 +138,7 @@ export const Home = () => {
         ) : null}
       </Flex>
 
-      <Box>
-
-      </Box>
+      <Box></Box>
     </>
   );
 };
@@ -139,15 +177,10 @@ const OImage = styled.img`
   animation: ${oslide} 2s ease-in-out;
 `;
 
-
 const slideButton = keyframes`
 
-`
+`;
 
-const AnimatedButton  = styled(Button)`
-  
-animation : ${slideButton} 2s ease-in-out;
-
-
-
-`
+const AnimatedButton = styled(Button)`
+  animation: ${slideButton} 2s ease-in-out;
+`;

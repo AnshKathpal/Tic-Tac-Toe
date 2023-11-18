@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Result } from "./Result";
 import { Link } from "react-router-dom";
-
+import io from "socket.io-client";
 import {
   Modal,
   ModalOverlay,
@@ -18,7 +18,9 @@ import { FiRotateCw } from "react-icons/fi";
 
 import { Turn } from "./Turn";
 
-export const Board = () => {
+const socket = io.connect("http://localhost:8080");
+
+export const Board = ({ room }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [eachBox, setEachBox] = useState(Array(9).fill(null));
@@ -32,6 +34,12 @@ export const Board = () => {
   const [countXWinner, setCountXWinner] = useState(0);
   const [count0Winner, setCount0Winner] = useState(0);
   const [countDraw, setCountDraw] = useState(0);
+
+
+
+  const [message,setMessage] = useState("");
+  const [messageReceived,setMessageReceived] = useState("")
+
 
   const winner = () => {
     const winnerLogic = [
@@ -106,15 +114,63 @@ export const Board = () => {
     setCountDraw(0);
     setCount0Winner(0);
   };
-
+  
   const handleRound = () => {
     setEachBox(Array(9).fill(null));
     setPlayerTurn("X");
     setIsXTurn(true);
   };
+  
+  const sendMessage = () => {
+    socket.emit("send_message", { message,room });
+  };
+  
+
+  
+  
+  useEffect(()=>{
+    socket.on("receive_message",(data)=>{
+      setMessageReceived(data.message)
+    })
+    
+    return () => {
+      socket.off("receive_message");
+    };
+  },[])
+  
+  
+  
+  console.log(room);
 
   return (
-    <Flex height="100vh" justify="center" align="center" bg="#041C32">
+    <Flex
+      height="100vh"
+      justify="center"
+      align="center"
+      bg="#041C32"
+      pos="relative"
+    >
+      <Box
+        style={{
+          position: "absolute",
+          top: "20%",
+          left: "10%",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
+        <input type="text" name="" id="" onChange={(e)=>{
+          setMessage(e.target.value)
+        }} />
+        <Button onClick={sendMessage}>Send Message</Button>
+
+
+        <Text color = "white" mt = "20px" >
+          {messageReceived}
+        </Text>
+      </Box>
+
       {isWinner &&
         (isWinner === "draw" ? (
           <Result onClick={handleRound} text={"It's a Draw"} />
