@@ -14,12 +14,24 @@ const io = new Server(server, {
   },
 });
 
+const gameRooms = {};
+
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
   socket.on("join_room", (data) => {
     socket.join(data);
     console.log(`User with id ${socket.id} joined room ${data} `);
+  });
+
+  socket.on("make_move", ({ index, symbol, room }) => {
+    // Broadcast the move to all clients in the room
+    io.to(room).emit("move_made", { index, symbol });
+  });
+
+  socket.on("restart_game", ({ room }) => {
+    // Broadcast the restart event to all clients in the room
+    io.to(room).emit("game_restart");
   });
 
   socket.on("send_message", (data) => {
