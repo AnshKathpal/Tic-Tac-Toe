@@ -1,3 +1,4 @@
+//! Imports
 import { Box, Grid, Flex, Button, Text, useDisclosure } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -13,31 +14,33 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-
 import { FiRotateCw } from "react-icons/fi";
-
 import { Turn } from "./Turn";
+//! Imports
 
 // const socket = io.connect("http://localhost:8080");
 
 export const Board = ({ room, socket }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  //! States
+
   const [eachBox, setEachBox] = useState(Array(9).fill(null));
-
   const [isXTurn, setIsXTurn] = useState(true);
-
   const [playerTurn, setPlayerTurn] = useState("X");
-
   console.log(playerTurn, "Turn");
 
   const [countXWinner, setCountXWinner] = useState(0);
   const [count0Winner, setCount0Winner] = useState(0);
   const [countDraw, setCountDraw] = useState(0);
 
+  const [isActivePlayer, setIsActivePlayer] = useState(true);
+
   const [message, setMessage] = useState("");
   const [messageReceived, setMessageReceived] = useState("");
+  //! States
 
+  //! Winner Logic
   const winner = () => {
     const winnerLogic = [
       [0, 1, 2],
@@ -67,9 +70,10 @@ export const Board = ({ room, socket }) => {
 
     return false;
   };
+  //! Winner Logic
 
+  //! Update Score
   const isWinner = winner();
-
   console.log(countXWinner, "X");
   console.log(count0Winner, "0");
   console.log(countDraw, "Draw");
@@ -83,20 +87,43 @@ export const Board = ({ room, socket }) => {
       setCountDraw((prevCount) => prevCount + 1);
     }
   }, [isWinner]);
+  //! Update Score
 
   const handleClick = (index) => {
-    if (eachBox[index] != null) {
+    if (eachBox[index] != null || !isActivePlayer) {
       return;
     }
 
     const copyState = [...eachBox];
-    copyState[index] = isXTurn ? "X" : "0";
+    copyState[index] = isXTurn ? "X" : "0"; 
     setEachBox(copyState);
     setIsXTurn(!isXTurn);
 
-    let turn = isXTurn ? "0" : "X";
+    console.log("Turnnn", copyState);
+
+    let turn = isXTurn ? "X" : "0"; 
     setPlayerTurn(turn);
+
+    setIsActivePlayer(false);
+  
+    socket.emit("make_move", { index, symbol: turn, room });
   };
+
+  useEffect(() => {
+    // ... (existing code)
+  
+    socket.on("move_made", ({ index, symbol }) => {
+      const copyState = [...eachBox];
+      copyState[index] = symbol;
+      setEachBox(copyState);
+      setIsXTurn(symbol === "0");
+      setPlayerTurn(symbol === "0" ? "X" : "0");
+      setIsActivePlayer(true);
+    });
+  
+    // ... (existing code)
+  
+  }, [eachBox]);
 
   const handleRestart = () => {
     onOpen();
@@ -110,6 +137,9 @@ export const Board = ({ room, socket }) => {
     setCountXWinner(0);
     setCountDraw(0);
     setCount0Winner(0);
+
+
+    socket.emit("restart_game", { room });
   };
 
   const handleRound = () => {
@@ -118,6 +148,26 @@ export const Board = ({ room, socket }) => {
     setIsXTurn(true);
   };
 
+
+  useEffect(() => {
+    // ... (existing code)
+  
+    socket.on("game_won", (winnerSymbol) => {
+      if (winnerSymbol === "X") {
+        setCountXWinner(countXWinner + 1);
+      } else if (winnerSymbol === "0") {
+        setCount0Winner(count0Winner + 1);
+      }
+    });
+  
+    socket.on("game_draw", () => {
+      setCountDraw((prevCount) => prevCount + 1);
+    });
+  
+    // ... (existing code)
+  
+  }, []);
+  
   const sendMessage = () => {
     socket.emit("send_message", { message, room });
   };
@@ -197,6 +247,7 @@ export const Board = ({ room, socket }) => {
             onClick={handleRestart}
             width="15%"
             h="100%"
+            isDisabled = {!isActivePlayer}
           >
             <FiRotateCw />
           </Button>
@@ -346,4 +397,5 @@ const InnerBox = styled.div`
   color: white;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-`;
+`
+;
